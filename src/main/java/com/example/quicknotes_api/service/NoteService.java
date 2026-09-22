@@ -1,36 +1,50 @@
 package com.example.quicknotes_api.service;
 
+import com.example.quicknotes_api.dto.CreateNoteRequest;
+import com.example.quicknotes_api.dto.NoteResponse;
+import com.example.quicknotes_api.dto.UpdateNoteRequest;
 import com.example.quicknotes_api.exceptions.NoteNotFoundException;
+import com.example.quicknotes_api.mapper.NoteMapper;
 import com.example.quicknotes_api.model.Note;
 import com.example.quicknotes_api.repository.NoteRepository;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NoteService {
+    private final NoteMapper noteMapper;
     private final NoteRepository noteRepository;
-    public  NoteService(NoteRepository noteRepository){
+    public  NoteService(NoteRepository noteRepository,NoteMapper noteMapper){
+        this.noteMapper = noteMapper;
         this.noteRepository = noteRepository;
     }
-    public List<Note> getNotes(){
-       return noteRepository.findAll();
+    public List<NoteResponse> getNotes(){
+       List<Note> notes = noteRepository.findAll();
+        List<NoteResponse> noteResponses = new ArrayList<>();
+        for(Note note : notes){
+            NoteResponse noteResponse = noteMapper.toResponse(note);
+            noteResponses.add(noteResponse);
+        }
+        return noteResponses;
     }
-    public Note createNote(Note note){
-        return noteRepository.save(note);
+    public NoteResponse createNote(CreateNoteRequest noteRequest){
+        Note note = noteMapper.toEntity(noteRequest);
+        note = noteRepository.save(note);
+        return noteMapper.toResponse(note);
     }
-    public Note getNoteById(Long id){
-        return noteRepository.findById(id).orElseThrow(()-> new NoteNotFoundException(id));
+    public NoteResponse getNoteById(Long id){
+        Note note = noteRepository.findById(id).orElseThrow(()-> new NoteNotFoundException(id));
+        return noteMapper.toResponse(note);
     }
     public void deleteNoteById(Long id){
-         noteRepository.deleteById(id);
+        noteRepository.delete(noteRepository.findById(id).orElseThrow(()-> new NoteNotFoundException(id)));
     }
-    public Note putNoteById(Long id, Note note){
+    public NoteResponse putNoteById(Long id, UpdateNoteRequest noteRequest){
         Note existingNote = noteRepository.findById(id).orElseThrow(()->new NoteNotFoundException(id));
-        existingNote.setTitle(note.getTitle());
-        existingNote.setContent(note.getContent());
-        return noteRepository.save(existingNote);
+        noteMapper.updateEntity(noteRequest,existingNote);
+        return noteMapper.toResponse(noteRepository.save(existingNote));
     }
 }
