@@ -1,12 +1,13 @@
 package com.example.quicknotes_api.controller;
 
-import com.example.quicknotes_api.model.Note;
+import com.example.quicknotes_api.dto.CreateNoteRequest;
+import com.example.quicknotes_api.dto.NoteResponse;
+import com.example.quicknotes_api.dto.UpdateNoteRequest;
 import com.example.quicknotes_api.service.NoteService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class NoteController {
@@ -16,23 +17,25 @@ public class NoteController {
         this.noteService = noteService;
     }
     @PutMapping("/notes/{id}")
-    public void putNoteById(@RequestBody Note note, @PathVariable Long id){
-        noteService.putNoteById(id,note);
+    public NoteResponse putNoteById(@Valid @RequestBody UpdateNoteRequest noteRequest, @PathVariable Long id){
+        return noteService.putNoteById(id,noteRequest);
     }
     @DeleteMapping("/notes/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNoteById(@PathVariable Long id){
         noteService.deleteNoteById(id);
     }
     @GetMapping("/notes")
-    public List<Note> getNotes(){
+    public List<NoteResponse> getNotes(){
         return noteService.getNotes();
     }
     @GetMapping("/notes/{id}")
-    public Note getNodeById(@PathVariable Long id){
+    public NoteResponse getNodeById(@PathVariable Long id){
         return noteService.getNoteById(id);
     }
     @PostMapping("/notes")
-    public Note saveNote(@Valid @RequestBody Note note){
-        return noteService.createNote(note);
+    @ResponseStatus(HttpStatus.CREATED)
+    public NoteResponse saveNote(@Valid @RequestBody CreateNoteRequest noteRequest){
+        return noteService.createNote(noteRequest);
     }
 }
