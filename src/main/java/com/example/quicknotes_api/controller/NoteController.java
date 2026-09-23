@@ -30,7 +30,7 @@ public class NoteController {
         return noteService.getNotes();
     }
     @GetMapping("/notes/{id}")
-    public NoteResponse getNodeById(@PathVariable Long id){
+    public NoteResponse getNoteById(@PathVariable Long id){
         return noteService.getNoteById(id);
     }
     @PostMapping("/notes")
