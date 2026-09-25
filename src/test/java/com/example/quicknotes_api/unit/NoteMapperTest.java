@@ -1,9 +1,10 @@
-package com.example.quicknotes_api.mapper;
+package com.example.quicknotes_api.unit;
 
 
 import com.example.quicknotes_api.dto.CreateNoteRequest;
 import com.example.quicknotes_api.dto.NoteResponse;
 import com.example.quicknotes_api.dto.UpdateNoteRequest;
+import com.example.quicknotes_api.mapper.NoteMapper;
 import com.example.quicknotes_api.model.Note;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

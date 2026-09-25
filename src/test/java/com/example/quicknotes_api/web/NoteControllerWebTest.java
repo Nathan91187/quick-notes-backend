@@ -1,4 +1,5 @@
-package com.example.quicknotes_api.controller;
+package com.example.quicknotes_api.web;
+import com.example.quicknotes_api.controller.NoteController;
 import com.example.quicknotes_api.dto.CreateNoteRequest;
 import com.example.quicknotes_api.dto.NoteResponse;
 import com.example.quicknotes_api.dto.UpdateNoteRequest;

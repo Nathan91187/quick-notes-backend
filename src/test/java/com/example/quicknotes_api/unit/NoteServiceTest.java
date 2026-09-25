@@ -1,4 +1,4 @@
-package com.example.quicknotes_api.service;
+package com.example.quicknotes_api.unit;
 
 import com.example.quicknotes_api.dto.CreateNoteRequest;
 import com.example.quicknotes_api.dto.NoteResponse;
@@ -7,6 +7,7 @@ import com.example.quicknotes_api.exceptions.NoteNotFoundException;
 import com.example.quicknotes_api.mapper.NoteMapper;
 import com.example.quicknotes_api.model.Note;
 import com.example.quicknotes_api.repository.NoteRepository;
+import com.example.quicknotes_api.service.NoteService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
